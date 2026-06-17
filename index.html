@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>සිංහල AI සහායකයා</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .chat-container { width: 100%; max-width: 420px; height: 90vh; max-height: 600px; background: white; border-radius: 15px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden; margin: 10px; }
+        .chat-header { background: #007bff; color: white; padding: 18px; text-align: center; font-weight: bold; font-size: 1.1rem; }
+        .chat-box { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; background: #fafafa; }
+        .message { padding: 10px 14px; border-radius: 12px; max-width: 75%; font-size: 0.95rem; line-height: 1.4; word-wrap: break-word; }
+        .user { background: #007bff; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .bot { background: #e4e6eb; color: #1c1e21; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .chat-input-area { display: flex; padding: 12px; border-top: 1px solid #eee; background: white; gap: 6px; }
+        .chat-input-area input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 20px; outline: none; font-size: 0.95rem; }
+        .chat-input-area button { background: #007bff; color: white; border: none; padding: 10px 16px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+        .clear-btn { background: #dc3545 !important; }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-header">සිංහල AI සහායකයා (Saved Locally)</div>
+    <div class="chat-box" id="chatBox"></div>
+    <div class="chat-input-area">
+        <input type="text" id="userInput" placeholder="ඔබේ ගැටළුව මෙතන ලියන්න..." onkeydown="if(event.key === 'Enter') sendMessage()">
+        <button onclick="sendMessage()">යවන්න</button>
+        <button class="clear-btn" onclick="clearChat()">ಮಕන්න</button>
+    </div>
+</div>
+
+<script>
+    const chatBox = document.getElementById('chatBox');
+    const userInput = document.getElementById('userInput');
+
+    // Browser eke local storage eken chat history eka gන්නවා
+    let chatHistory = JSON.parse(localStorage.getItem('sinhala_chat_history')) || [];
+    
+    function loadChatHistory() {
+        chatBox.innerHTML = '';
+        if(chatHistory.length === 0) {
+            appendMessage("ආයුබෝවන්! මම සිංහල AI සහායකයෙක්. ඔබට ඇති පරිගණක ගැටළු මෙතන ලියන්න. (ඔබේ චැට් ඉතිහාසය මෙම පරිගණකයේම සුරැකේ)", 'bot');
+        } else {
+            chatHistory.forEach(msg => appendMessage(msg.text, msg.sender));
+        }
+    }
+
+    function appendMessage(text, sender) {
+        const msgDiv = document.createElement('div');
+        msgDiv.classList.add('message', sender);
+        msgDiv.innerText = text;
+        chatBox.appendChild(msgDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    async function sendMessage() {
+        const text = userInput.value.trim();
+        if (!text) return;
+
+        appendMessage(text, 'user');
+        chatHistory.push({ text: text, sender: 'user' });
+        localStorage.setItem('sinhala_chat_history', JSON.stringify(chatHistory));
+        userInput.value = '';
+
+        // API ekata call karana thura loading ekak pennන්න
+        const loadingDiv = document.createElement('div');
+        loadingDiv.classList.add('message', 'bot');
+        loadingDiv.innerText = "පොඩ්ඩක් ඉන්න...";
+        chatBox.appendChild(loadingDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        // API eka thama nathi nisa thාවකාලික පිළිතුරක්
+        setTimeout(() => {
+            chatBox.removeChild(loadingDiv); // Loading eka ain කරනවා
+            
+            const botResponse = "ඔබ ඇසූ ප්‍රශ්නය: '" + text + "'. මම තාමත් සංවර්ධනය වෙමින් පවතින සරල ආකෘතියක් නිසා සැබෑ API එකක් සම්බන්ධ කළ පසු නිවැරදි පිළිතුර ලබා දිය හැක.";
+            
+            appendMessage(botResponse, 'bot');
+            chatHistory.push({ text: botResponse, sender: 'bot' });
+            localStorage.setItem('sinhala_chat_history', JSON.stringify(chatHistory));
+        }, 1000);
+    }
+
+    function clearChat() {
+        if(confirm("සැබැවින්ම චැට් ඉතිහාසය මැකීමට අවශ්‍යද?")) {
+            localStorage.removeItem('sinhala_chat_history');
+            chatHistory = [];
+            loadChatHistory();
+        }
+    }
+
+    loadChatHistory();
+</script>
+
+</body>
+</html>
