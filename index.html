@@ -34,14 +34,13 @@
     const chatBox = document.getElementById('chatBox');
     const userInput = document.getElementById('userInput');
 
-    // යූසර්ගේ Browser එකේම API Key එක සේව් කරලා තියාගන්නවා (GitHub එකට යන්නේ නැහැ)
+    // යූසර්ගේ Browser එකේම API Key එක සේဝ် කරලා තියාගන්නවා
     let GEMINI_API_KEY = localStorage.getItem('user_gemini_key') || "";
     let chatHistory = JSON.parse(localStorage.getItem('sinhala_chat_history')) || [];
     
     function loadChatHistory() {
         chatBox.innerHTML = '';
         
-        // API Key එකක් නැත්නම් ඒක ඇතුළත් කරන්න කියලා මුලින්ම කියනවා
         if (!GEMINI_API_KEY) {
             appendMessage("ආයුබෝවන්! චැට් එක පාවිච්චි කරන්න කලින් කරුණාකර ඔබගේ Google Gemini API Key එක ඇතුළත් කරන්න. (මෙය ඔබගේ පරිගණකයේ ආරක්ෂිතව සුරැකේ)", 'bot');
             
@@ -94,8 +93,8 @@
         chatBox.appendChild(loadingDiv);
         chatBox.scrollTop = chatBox.scrollHeight;
 
-        // ස්ථාවර v1 URL එක සහ නිවැරදි model නම
-        const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+        // 🔄 මෙතනට අලුත්ම gemini-3.5-flash මොඩල් එක සහ v1beta එන්ඩ්පොයින්ට් එක දැම්මා
+        const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
         try {
             const response = await fetch(GEMINI_API_URL, {
