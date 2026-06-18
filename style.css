@@ -1,0 +1,23 @@
+/* චැට් බොක්ස් එක ඇතුළත ඇති ලස්සන Scrollbar එක සකස් කිරීම */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.5);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(56, 189, 248, 0.3);
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(56, 189, 248, 0.6);
+}
+
+/* පණිවිඩ වල ඇති දිගු වචන කැඩී යාම වැළැක්වීමේ රීති (Word break) */
+.message-bubble {
+    word-break: break-word;
+    max-width: 80%;
+}
