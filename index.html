@@ -79,54 +79,75 @@
     }
 
     async function sendMessage() {
-        const text = userInput.value.trim();
-        if (!text || !GEMINI_API_KEY) return;
+const text = userInput.value.trim();
+    if (!text || !GEMINI_API_KEY) return;
 
-        appendMessage(text, 'user');
-        chatHistory.push({ text: text, sender: 'user' });
-        localStorage.setItem('sinhala_chat_history', JSON.stringify(chatHistory));
-        userInput.value = '';
+    // 1. User ge message eka screen ekata dala local storage save kireema
+    appendMessage(text, 'user');
+    chatHistory.push({ text: text, sender: 'user' });
+    localStorage.setItem('sinhala_chat_history', JSON.stringify(chatHistory));
+    userInput.value = '';
 
-        const loadingDiv = document.createElement('div');
-        loadingDiv.classList.add('message', 'bot');
-        loadingDiv.innerText = "පිළිතුර සකසමින් පවතී...";
-        chatBox.appendChild(loadingDiv);
-        chatBox.scrollTop = chatBox.scrollHeight;
+    // Loading indicator eka
+    const loadingDiv = document.createElement('div');
+    loadingDiv.classList.add('message', 'bot');
+    loadingDiv.innerText = "පිළිතුර සකසමින් පවතී...";
+    chatBox.appendChild(loadingDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
 
-        // 🔄 මෙතනට අලුත්ම gemini-3.5-flash මොඩල් එක සහ v1beta එන්ඩ්පොයින්ට් එක දැම්මා
-        const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    // 2. Chat History eka Gemini API ekata kiyවන්න පුළුවන් විදියට සකස් කිරීම (Formatting)
+    // Kalin katha karapu okkoma me `contents` array ekata dapu nisa AI ekata kalin kiyapu dewal mathaka thiyenawa
+    let apiContents = [];
 
-        try {
-            const response = await fetch(GEMINI_API_URL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    contents: [{ 
-                        parts: [{ 
-                            text: `You are a helpful computer tech support assistant. Always respond in clear, natural Sinhala language. Answer this user query: ${text}` 
-                        }] 
-                    }]
-                })
-            });
+    // AI ekata mulinma dena upadesa (System Instruction)
+    apiContents.push({
+        role: "user",
+        parts: [{ text: "You are a helpful computer tech support assistant. Always respond in clear, natural Sinhala language. This is our conversation start." }]
+    });
+    apiContents.push({
+        role: "model",
+        parts: [{ text: "Therුනා. මම මින් ඉදිරියට පරිගණක තාක්ෂණික සහායකයෙකු ලෙස සිංහලෙන් පිළිතුරු ලබා දෙන්නම්." }]
+    });
 
-            const data = await response.json();
-            chatBox.removeChild(loadingDiv);
+    // Chat history eke thiyෙන parana messages tika API format ekata haravima
+    chatHistory.forEach(msg => {
+        apiContents.push({
+            role: msg.sender === 'user' ? 'user' : 'model',
+            parts: [{ text: msg.text }]
+        });
+    });
 
-            if(data.error) {
-                appendMessage("Error: " + data.error.message, 'bot');
-                return;
-            }
+    const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
-            const botResponse = data.candidates[0].content.parts[0].text;
-            appendMessage(botResponse, 'bot');
-            chatHistory.push({ text: botResponse, sender: 'bot' });
-            localStorage.setItem('sinhala_chat_history', JSON.stringify(chatHistory));
+    try {
+        const response = await fetch(GEMINI_API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                contents: apiContents // <-- Methanadi api parana okkoma messages tika yawanawa
+            })
+        });
 
-        } catch (error) {
-            chatBox.removeChild(loadingDiv);
-            appendMessage("කණගාටුයි, සම්බන්ධතාවය බිඳ වැටුණා. ඔබගේ API Key එක වලංගු එකක්දැයි නැවත පරීක්ෂා කරන්න.", 'bot');
-            console.error(error);
+        const data = await response.json();
+        chatBox.removeChild(loadingDiv);
+
+        if(data.error) {
+            appendMessage("Error: " + data.error.message, 'bot');
+            return;
         }
+
+        const botResponse = data.candidates[0].content.parts[0].text;
+        
+        // 3. AI ge pilithura screen ekata dala local storage save kireema
+        appendMessage(botResponse, 'bot');
+        chatHistory.push({ text: botResponse, sender: 'bot' });
+        localStorage.setItem('sinhala_chat_history', JSON.stringify(chatHistory));
+
+    } catch (error) {
+        chatBox.removeChild(loadingDiv);
+        appendMessage("කණගාටුයි, සම්බන්ධතාවය බිඳ වැටුණා.", 'bot');
+        console.error(error);
+    }
     }
 
     function clearChat() {
