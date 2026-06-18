@@ -1,166 +1,86 @@
 <!DOCTYPE html>
-<html lang="si">
+<html lang="si" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>සිංහල AI සහායකයා</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .chat-container { width: 100%; max-width: 420px; height: 90vh; max-height: 600px; background: white; border-radius: 15px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden; margin: 10px; }
-        .chat-header { background: #007bff; color: white; padding: 18px; text-align: center; font-weight: bold; font-size: 1.1rem; }
-        .chat-box { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; background: #fafafa; }
-        .message { padding: 10px 14px; border-radius: 12px; max-width: 75%; font-size: 0.95rem; line-height: 1.4; word-wrap: break-word; }
-        .user { background: #007bff; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
-        .bot { background: #e4e6eb; color: #1c1e21; align-self: flex-start; border-bottom-left-radius: 2px; }
-        .chat-input-area { display: flex; padding: 12px; border-top: 1px solid #eee; background: white; gap: 6px; }
-        .chat-input-area input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 20px; outline: none; font-size: 0.95rem; }
-        .chat-input-area button { background: #007bff; color: white; border: none; padding: 10px 16px; border-radius: 20px; cursor: pointer; font-weight: bold; }
-        .clear-btn { background: #dc3545 !important; }
-    </style>
+    <title>TechFix - Remote PC Repair & Tech Support</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="bg-gradient-to-br from-[#0f172a] to-[#1e293b] text-slate-100 min-h-screen flex flex-col justify-between antialiased">
 
-<div class="chat-container">
-    <div class="chat-header">පරිගණක ගැටළු විසඳන සිංහල AI</div>
-    <div class="chat-box" id="chatBox"></div>
-    <div class="chat-input-area">
-        <input type="text" id="userInput" placeholder="ඔබේ ගැටළුව මෙතන ලියන්න..." onkeydown="if(event.key === 'Enter') sendMessage()">
-        <button onclick="sendMessage()">යවන්න</button>
-        <button class="clear-btn" onclick="clearChat()">මකන්න</button>
+    <nav class="backdrop-blur-md bg-slate-900/70 border-b border-white/10 fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center">
+        <div class="text-xl font-bold text-sky-400 tracking-wide">TechFix AI</div>
+        <ul class="flex gap-6 text-sm font-medium text-slate-400">
+            <li><a href="#" class="hover:text-sky-400 transition">Home</a></li>
+            <li><a href="#services" class="hover:text-sky-400 transition">Services</a></li>
+            <li><a href="#contact" class="hover:text-sky-400 transition">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section class="max-w-4xl mx-auto text-center px-4 pt-32 pb-16 flex flex-col items-center justify-center flex-1">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight bg-gradient-to-r from-sky-400 to-indigo-400 bg-clip-text text-transparent">
+            ඔබේ පරිගණක ගැටළු නිවසේ සිටම පහසුවෙන් විසඳගන්න
+        </h1>
+        <p class="text-base md:text-lg text-slate-400 max-w-2xl mb-8">
+            Windows ඇතුළත් කිරීම්, පරිගණක වේගවත් කිරීම් සහ සියලුම මෘදුකාංගමය (Software) දෝෂ දුරස්ථව (Remotely) ආරක්ෂිතව සාදා දෙනු ලැබේ.
+        </p>
+        <a href="#contact" class="bg-sky-600 hover:bg-sky-500 text-white font-semibold px-8 py-3 rounded-full shadow-lg shadow-sky-600/30 transition transform hover:-translate-y-0.5">
+            Fix My PC Now
+        </a>
+    </section>
+
+    <section id="services" class="max-w-6xl mx-auto px-6 py-16 w-full">
+        <h2 class="text-2xl font-bold text-center mb-12 text-slate-200">අපගේ සේවාවන් (Our Services)</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="backdrop-blur-md bg-white/5 border border-white/5 p-6 rounded-2xl hover:border-sky-400/50 transition duration-300 transform hover:-translate-y-1">
+                <h3 class="text-lg font-semibold text-sky-400 mb-3">PC Speed Optimization</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">පරිගණකය අධික ලෙස ස්ලෝ වීම සහ හැන්ග් වීම් පරීක්ෂා කර පද්ධතිය වේගවත් කර දීම.</p>
+            </div>
+            <div class="backdrop-blur-md bg-white/5 border border-white/5 p-6 rounded-2xl hover:border-sky-400/50 transition duration-300 transform hover:-translate-y-1">
+                <h3 class="text-lg font-semibold text-sky-400 mb-3">OS & Software Setup</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Windows සහ ඔබට අවශ්‍ය අනෙකුත් අත්‍යවශ්‍ය මෘදුකාංග නිවැරදිව ස්ථාපනය කර දීම.</p>
+            </div>
+            <div class="backdrop-blur-md bg-white/5 border border-white/5 p-6 rounded-2xl hover:border-sky-400/50 transition duration-300 transform hover:-translate-y-1">
+                <h3 class="text-lg font-semibold text-sky-400 mb-3">Virus & Malware Removal</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">පරිගණකයට හානිකර වයිරස් සහ ස්පයිවෙයාර් වර්ග සම්පූර්ණයෙන්ම ඉවත් කර ආරක්ෂාව තහවුරු කිරීම.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="max-w-md mx-auto px-6 py-16 w-full text-center">
+        <h2 class="text-2xl font-bold mb-8">සම්බන්ධ වන්න (Contact Support)</h2>
+        <form class="backdrop-blur-md bg-white/5 border border-white/5 p-6 rounded-2xl text-left flex flex-col gap-4" onsubmit="event.preventDefault(); alert('ඔබේ පණිවිඩය ලැබුණා! අප ඔබව සම්බන්ධ කරගන්නෙමු.');">
+            <div>
+                <input type="text" placeholder="ඔබේ නම" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-slate-200 outline-none focus:border-sky-500 transition" required>
+            </div>
+            <div>
+                <input type="tel" placeholder="දුරකථන අංකය" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-slate-200 outline-none focus:border-sky-500 transition" required>
+            </div>
+            <div>
+                <textarea placeholder="ඔබේ පරිගණකයේ ඇති ලෙඩේ කෙටියෙන් ලියන්න..." rows="4" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-slate-200 outline-none focus:border-sky-500 transition resize-none" required></textarea>
+            </div>
+            <button type="submit" class="w-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold py-3 rounded-xl transition">Submit Request</button>
+        </form>
+    </section>
+
+    <button id="chatLauncher" onclick="toggleChat()" class="fixed bottom-6 right-6 bg-sky-600 hover:bg-sky-500 text-white font-bold px-6 py-4 rounded-full shadow-xl transition-all duration-300 z-50 flex items-center gap-2">
+        <span>💬</span> Chat with AI
+    </button>
+
+    <div id="chatContainer" class="fixed bottom-24 right-6 w-[360px] md:w-[380px] h-[500px] backdrop-blur-xl bg-slate-900/95 border border-white/10 rounded-2xl shadow-2xl z-50 hidden flex-col overflow-hidden">
+        <div class="bg-sky-600 px-4 py-4 flex justify-between items-center text-white font-bold text-sm">
+            <span>TechFix Support AI</span>
+            <button onclick="toggleChat()" class="text-white hover:text-slate-200 text-lg">✕</button>
+        </div>
+        <div id="chatBox" class="flex-1 p-4 overflow-y-auto bg-slate-950/50 flex flex-col gap-3 custom-scrollbar"></div>
+        <div class="p-3 border-t border-white/5 bg-slate-900 flex gap-2 items-center">
+            <input type="text" id="userInput" placeholder="ගැටළුව ලියන්න..." onkeydown="if(event.key === 'Enter') sendMessage()" class="flex-1 bg-slate-950 border border-white/10 rounded-full px-4 py-2 text-xs text-white outline-none focus:border-sky-500 transition">
+            <button onclick="sendMessage()" class="bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs px-4 py-2 rounded-full transition">යවන්න</button>
+            <button onclick="clearChat()" class="bg-slate-700 hover:bg-slate-600 text-slate-300 text-xs px-3 py-2 rounded-full transition">මකන්න</button>
+        </div>
     </div>
-</div>
 
-<script>
-    const chatBox = document.getElementById('chatBox');
-    const userInput = document.getElementById('userInput');
-
-    // යූසර්ගේ Browser එකේම API Key එක සේဝ် කරලා තියාගන්නවා
-    let GEMINI_API_KEY = localStorage.getItem('user_gemini_key') || "";
-    let chatHistory = JSON.parse(localStorage.getItem('sinhala_chat_history')) || [];
-    
-    function loadChatHistory() {
-        chatBox.innerHTML = '';
-        
-        if (!GEMINI_API_KEY) {
-            appendMessage("ආයුබෝවන්! චැට් එක පාවිච්චි කරන්න කලින් කරුණාකර ඔබගේ Google Gemini API Key එක ඇතුළත් කරන්න. (මෙය ඔබගේ පරිගණකයේ ආරක්ෂිතව සුරැකේ)", 'bot');
-            
-            const keyDiv = document.createElement('div');
-            keyDiv.style.padding = "10px";
-            keyDiv.innerHTML = `
-                <input type="password" id="keyInput" placeholder="AIzaSy..." style="width:65%; padding:10px; border-radius:20px; border:1px solid #ddd; outline:none;">
-                <button onclick="saveApiKey()" style="padding:10px 15px; background:#28a745; color:white; border:none; border-radius:20px; cursor:pointer; font-weight:bold;">Save Key</button>
-            `;
-            chatBox.appendChild(keyDiv);
-            return;
-        }
-
-        if(chatHistory.length === 0) {
-            appendMessage("මම පරිගණක සහ තාක්ෂණික ගැටළු විසඳන සිංහල AI සහායකයෙක්. ඔබට ඇති ගැටළුව පවසන්න.", 'bot');
-        } else {
-            chatHistory.forEach(msg => appendMessage(msg.text, msg.sender));
-        }
-    }
-
-    function saveApiKey() {
-        const key = document.getElementById('keyInput').value.trim();
-        if(key) {
-            localStorage.setItem('user_gemini_key', key);
-            GEMINI_API_KEY = key;
-            loadChatHistory();
-        }
-    }
-
-    function appendMessage(text, sender) {
-        const msgDiv = document.createElement('div');
-        msgDiv.classList.add('message', sender);
-        msgDiv.innerText = text;
-        chatBox.appendChild(msgDiv);
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    async function sendMessage() {
-const text = userInput.value.trim();
-    if (!text || !GEMINI_API_KEY) return;
-
-    // 1. User ge message eka screen ekata dala local storage save kireema
-    appendMessage(text, 'user');
-    chatHistory.push({ text: text, sender: 'user' });
-    localStorage.setItem('sinhala_chat_history', JSON.stringify(chatHistory));
-    userInput.value = '';
-
-    // Loading indicator eka
-    const loadingDiv = document.createElement('div');
-    loadingDiv.classList.add('message', 'bot');
-    loadingDiv.innerText = "පිළිතුර සකසමින් පවතී...";
-    chatBox.appendChild(loadingDiv);
-    chatBox.scrollTop = chatBox.scrollHeight;
-
-    // 2. Chat History eka Gemini API ekata kiyවන්න පුළුවන් විදියට සකස් කිරීම (Formatting)
-    // Kalin katha karapu okkoma me `contents` array ekata dapu nisa AI ekata kalin kiyapu dewal mathaka thiyenawa
-    let apiContents = [];
-
-    // AI ekata mulinma dena upadesa (System Instruction)
-    apiContents.push({
-        role: "user",
-        parts: [{ text: "You are a helpful computer tech support assistant. Always respond in clear, natural Sinhala language. This is our conversation start." }]
-    });
-    apiContents.push({
-        role: "model",
-        parts: [{ text: "Therුනා. මම මින් ඉදිරියට පරිගණක තාක්ෂණික සහායකයෙකු ලෙස සිංහලෙන් පිළිතුරු ලබා දෙන්නම්." }]
-    });
-
-    // Chat history eke thiyෙන parana messages tika API format ekata haravima
-    chatHistory.forEach(msg => {
-        apiContents.push({
-            role: msg.sender === 'user' ? 'user' : 'model',
-            parts: [{ text: msg.text }]
-        });
-    });
-
-    const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-
-    try {
-        const response = await fetch(GEMINI_API_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                contents: apiContents // <-- Methanadi api parana okkoma messages tika yawanawa
-            })
-        });
-
-        const data = await response.json();
-        chatBox.removeChild(loadingDiv);
-
-        if(data.error) {
-            appendMessage("Error: " + data.error.message, 'bot');
-            return;
-        }
-
-        const botResponse = data.candidates[0].content.parts[0].text;
-        
-        // 3. AI ge pilithura screen ekata dala local storage save kireema
-        appendMessage(botResponse, 'bot');
-        chatHistory.push({ text: botResponse, sender: 'bot' });
-        localStorage.setItem('sinhala_chat_history', JSON.stringify(chatHistory));
-
-    } catch (error) {
-        chatBox.removeChild(loadingDiv);
-        appendMessage("කණගාටුයි, සම්බන්ධතාවය බිඳ වැටුණා.", 'bot');
-        console.error(error);
-    }
-    }
-
-    function clearChat() {
-        if(confirm("චැට් ඉතිහාසය සහ API Key එක සම්පූර්ණයෙන්ම මකා දැමීමට අවශ්‍යද?")) {
-            localStorage.clear();
-            chatHistory = [];
-            GEMINI_API_KEY = "";
-            loadChatHistory();
-        }
-    }
-
-    loadChatHistory();
-</script>
-
+    <script src="script.js"></script>
 </body>
 </html>
